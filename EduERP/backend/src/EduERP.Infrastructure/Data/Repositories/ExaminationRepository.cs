@@ -133,4 +133,14 @@ public class ExaminationRepository : BaseRepository, IExaminationRepository
         p.Add("@ClassId", classId);
         return await QueryAsync<ClassStudentDto>("usp_Exam_GetClassStudents", p);
     }
+
+    public async Task<IEnumerable<ClassDto>> GetAllClassesAsync()
+        => await QueryAsync<ClassDto>("usp_Class_GetAll");
+
+    public async Task<IEnumerable<SectionDto>> GetSectionsByClassAsync(int classId)
+    {
+        var p = new DynamicParameters();
+        p.Add("@ClassId", classId);
+        return await QueryAsync<SectionDto>("usp_Section_GetByClass", p);
+    }
 }

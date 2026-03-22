@@ -4,6 +4,7 @@ using EduERP.Infrastructure.Caching;
 using EduERP.Infrastructure.Data;
 using EduERP.Infrastructure.Data.Repositories;
 using EduERP.Infrastructure.Messaging;
+using EduERP.Infrastructure.PaymentGateway;
 using EduERP.Infrastructure.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,7 +50,14 @@ public static class DependencyInjection
         services.AddScoped<IStudentRepository, StudentRepository>();
         services.AddScoped<IAdmissionRepository, AdmissionRepository>();
         services.AddScoped<IExaminationRepository, ExaminationRepository>();
+        services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+        services.AddScoped<IFeesRepository, FeesRepository>();
+        services.AddScoped<IReportRepository, ReportRepository>();
 
+        // ── Payment Gateway ───────────────────────────────────────────────────────
+        services.Configure<PaymentGatewayOptions>(
+            configuration.GetSection(PaymentGatewayOptions.SectionName));
+        services.AddSingleton<IPaymentGateway, StripePaymentGateway>();
         // ── Redis ─────────────────────────────────────────────────────────────
         services.AddSingleton<IConnectionMultiplexer>(
             _ => ConnectionMultiplexer.Connect(

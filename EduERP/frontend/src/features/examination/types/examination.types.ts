@@ -121,3 +121,17 @@ export interface ResultRow {
 export interface BulkResultEntry {
   results: ResultRow[];
 }
+
+export interface ClassItem {
+  classId:        number;
+  className:      string;
+  gradeLevel:     number;
+  academicYearId: number;
+  yearName:       string;
+}
+
+export interface SectionItem {
+  sectionId:   number;
+  classId:     number;
+  sectionName: string;
+}

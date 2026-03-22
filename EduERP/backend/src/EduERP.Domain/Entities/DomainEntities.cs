@@ -60,3 +60,54 @@ public class RefreshToken : BaseEntity
     public bool     IsRevoked { get; set; }
     public DateTime? RevokedAt { get; set; }
 }
+
+public class FeeStructure : BaseEntity
+{
+    public int      FeeStructureId { get; set; }
+    public string   FeeName        { get; set; } = string.Empty;
+    public int      AcademicYearId { get; set; }
+    public int?     ClassId        { get; set; }    // null = applies to all classes
+    public decimal  Amount         { get; set; }
+    public bool     IsRecurring    { get; set; }
+    public string?  Frequency      { get; set; }    // Monthly | Quarterly | Annual | OneTime
+    public DateOnly? DueDate       { get; set; }
+}
+
+public class FeeInvoice : BaseEntity
+{
+    public int      InvoiceId      { get; set; }
+    public string   InvoiceNumber  { get; set; } = string.Empty;
+    public int      StudentId      { get; set; }
+    public int      FeeStructureId { get; set; }
+    public DateOnly? InvoiceMonth  { get; set; }
+    public DateOnly DueDate        { get; set; }
+    public decimal  TotalAmount    { get; set; }
+    public decimal  PaidAmount     { get; set; }
+    public decimal  BalanceAmount  { get; set; }    // Computed column
+    public string   Status         { get; set; } = "Pending";
+}
+
+public class FeePayment : BaseEntity
+{
+    public int      PaymentId            { get; set; }
+    public int      InvoiceId            { get; set; }
+    public decimal  AmountPaid           { get; set; }
+    public string   PaymentMethod        { get; set; } = string.Empty;
+    public string?  TransactionReference { get; set; }
+    public string?  ReceiptNumber        { get; set; }
+    public DateOnly PaymentDate          { get; set; }
+    public int      RecordedBy           { get; set; }
+}
+
+public class PaymentSession : BaseEntity
+{
+    public int      SessionId        { get; set; }
+    public int      InvoiceId        { get; set; }
+    public string   ExternalRef      { get; set; } = string.Empty;   // Stripe session ID
+    public decimal  Amount           { get; set; }
+    public string   Currency         { get; set; } = "usd";
+    public string   Status           { get; set; } = "Pending";
+    public DateTime ExpiresAt        { get; set; }
+    public DateTime? CompletedAt     { get; set; }
+    public string?  PaymentIntentRef { get; set; }
+}

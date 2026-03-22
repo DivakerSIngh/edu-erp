@@ -16,4 +16,6 @@ public interface IExaminationService
     Task<ReportCardDto>                            GetReportCardAsync(int examinationId, int studentId);
     Task<IEnumerable<SubjectDto>>                  GetAllSubjectsAsync();
     Task<IEnumerable<ClassStudentDto>>             GetClassStudentsAsync(int classId);
+    Task<IEnumerable<ClassDto>>                    GetAllClassesAsync();
+    Task<IEnumerable<SectionDto>>                  GetSectionsByClassAsync(int classId);
 }

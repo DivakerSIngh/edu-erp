@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { ROUTES } from '../../router/routeConstants';
 import { useAuth } from '../../hooks/useAuth';
 import {
@@ -16,23 +16,92 @@ import {
   BellIcon,
   MagnifyingGlassIcon,
   ChevronRightIcon,
+  ChevronDownIcon,
+  BuildingLibraryIcon,
+  ReceiptRefundIcon,
+  CurrencyDollarIcon,
+  UsersIcon,
+  CalendarDaysIcon,
+  ExclamationTriangleIcon,
+  TrophyIcon,
+  DocumentChartBarIcon,
+  ClipboardIcon,
+  CreditCardIcon,
 } from '@heroicons/react/24/outline';
 
-const NAV_ITEMS = [
-  { label: 'Dashboard',     path: ROUTES.DASHBOARD,          icon: HomeIcon,                      roles: ['Admin','Teacher','Student','Parent'] },
-  { label: 'Admission',     path: ROUTES.ADMISSION,          icon: ClipboardDocumentListIcon,      roles: ['Admin'] },
-  { label: 'Students',      path: ROUTES.STUDENTS,           icon: UserGroupIcon,                  roles: ['Admin','Teacher'] },
-  { label: 'Attendance',    path: ROUTES.ATTENDANCE_MARK,    icon: ClipboardDocumentListIcon,      roles: ['Admin','Teacher'] },
-  { label: 'Examination',   path: ROUTES.EXAMINATIONS,       icon: AcademicCapIcon,                roles: ['Admin','Teacher'] },
-  { label: 'Fees',          path: ROUTES.FEE_INVOICES,       icon: BanknotesIcon,                  roles: ['Admin'] },
-  { label: 'Communication', path: ROUTES.ANNOUNCEMENTS,      icon: ChatBubbleLeftRightIcon,         roles: ['Admin','Teacher','Student','Parent'] },
-  { label: 'Reports',       path: ROUTES.REPORT_ATTENDANCE,  icon: ChartBarIcon,                   roles: ['Admin','Teacher'] },
-] as const;
+// ── Nav types ─────────────────────────────────────────────────────────────────
+type NavChild = { label: string; path: string; icon?: React.ComponentType<{ className?: string }> };
+type NavItem  = {
+  label:    string;
+  path:     string | null;
+  icon:     React.ComponentType<{ className?: string }>;
+  roles:    readonly string[];
+  children?: NavChild[];
+};
+
+const NAV_ITEMS: NavItem[] = [
+  { label: 'Dashboard',     path: ROUTES.DASHBOARD,         icon: HomeIcon,                  roles: ['Admin','Teacher','Student','Parent'] },
+  { label: 'Admission',     path: ROUTES.ADMISSION,         icon: ClipboardDocumentListIcon, roles: ['Admin'] },
+  { label: 'Students',      path: ROUTES.STUDENTS,          icon: UserGroupIcon,             roles: ['Admin','Teacher'] },
+  { label: 'Attendance',    path: ROUTES.ATTENDANCE_MARK,   icon: ClipboardDocumentListIcon, roles: ['Admin','Teacher'] },
+  { label: 'Examination',   path: ROUTES.EXAMINATIONS,      icon: AcademicCapIcon,           roles: ['Admin','Teacher'] },
+  {
+    label: 'Fees',
+    path:  null,
+    icon:  BanknotesIcon,
+    roles: ['Admin'],
+    children: [
+      { label: 'Fee Structures',     path: ROUTES.FEE_STRUCTURES, icon: BuildingLibraryIcon },
+      { label: 'Fee Invoices',       path: ROUTES.FEE_INVOICES,   icon: ReceiptRefundIcon },
+      { label: 'Financial Overview', path: ROUTES.FEE_PAYMENTS,   icon: CurrencyDollarIcon },
+    ],
+  },
+  { label: 'Communication', path: ROUTES.ANNOUNCEMENTS,     icon: ChatBubbleLeftRightIcon,   roles: ['Admin','Teacher','Student','Parent'] },
+  {
+    label: 'Reports',
+    path:  null,
+    icon:  ChartBarIcon,
+    roles: ['Admin','Teacher'],
+    children: [
+      { label: 'Enrollment Summary',  path: ROUTES.REPORT_STUDENTS_ENROLLMENT, icon: UsersIcon },
+      { label: 'Student Directory',   path: ROUTES.REPORT_STUDENTS_DIRECTORY,  icon: UserGroupIcon },
+      { label: 'Class Attendance',    path: ROUTES.REPORT_ATTENDANCE,          icon: CalendarDaysIcon },
+      { label: 'Student Attendance',  path: ROUTES.REPORT_ATTENDANCE_STUDENT,  icon: ClipboardIcon },
+      { label: 'Low Attendance Alert',path: ROUTES.REPORT_LOW_ATTENDANCE,      icon: ExclamationTriangleIcon },
+      { label: 'Class Results',       path: ROUTES.REPORT_ACADEMIC,            icon: TrophyIcon },
+      { label: 'Report Cards',        path: ROUTES.REPORT_ACADEMIC_REPORTCARD, icon: DocumentChartBarIcon },
+      { label: 'Subject Performance', path: ROUTES.REPORT_ACADEMIC_SUBJECTS,   icon: ChartBarIcon },
+      { label: 'Fee Summary',         path: ROUTES.REPORT_FEES,                icon: BanknotesIcon },
+      { label: 'Payment History',     path: ROUTES.REPORT_FEES_PAYMENTS,       icon: CreditCardIcon },
+      { label: 'Admissions Report',   path: ROUTES.REPORT_ADMISSION,           icon: ClipboardDocumentListIcon },
+    ],
+  },
+];
 
 export default function PrivateLayout() {
   const { user, signOut } = useAuth();
-  const navigate         = useNavigate();
-  const [open, setOpen]  = useState(true);
+  const navigate          = useNavigate();
+  const location          = useLocation();
+  const [open, setOpen]   = useState(true);
+
+  // Auto-expand groups whose child is currently active
+  const [openGroups, setOpenGroups] = useState<Set<string>>(() => {
+    const initial = new Set<string>();
+    for (const item of NAV_ITEMS) {
+      if (item.children?.some(c => location.pathname.startsWith(c.path))) {
+        initial.add(item.label);
+      }
+    }
+    return initial;
+  });
+
+  const toggleGroup = (label: string) => {
+    setOpenGroups(prev => {
+      const next = new Set(prev);
+      if (next.has(label)) next.delete(label); else next.add(label);
+      return next;
+    });
+  };
 
   const handleLogout = async () => {
     await signOut();
@@ -84,10 +153,71 @@ export default function PrivateLayout() {
         <nav className="flex-1 overflow-y-auto py-4 space-y-0.5 px-3">
           {visibleNav.map((item) => {
             const Icon = item.icon;
+
+            // ── Expandable group (e.g. Fees) ──────────────────────────────
+            if (item.children) {
+              const isGroupActive = item.children.some(c => location.pathname.startsWith(c.path));
+              const isExpanded    = openGroups.has(item.label);
+              return (
+                <div key={item.label}>
+                  <button
+                    onClick={() => {
+                      if (!open) { navigate(item.children![0].path); return; }
+                      toggleGroup(item.label);
+                    }}
+                    title={!open ? item.label : undefined}
+                    className={`w-full group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+                      isGroupActive
+                        ? 'bg-blue-600/25 text-white'
+                        : 'text-slate-400 hover:bg-white/10 hover:text-white'
+                    }`}
+                  >
+                    <Icon className={`w-5 h-5 flex-shrink-0 ${
+                      isGroupActive ? 'text-blue-300' : 'text-slate-400 group-hover:text-white'
+                    }`} />
+                    {open && (
+                      <>
+                        <span className="flex-1 text-left">{item.label}</span>
+                        <ChevronDownIcon className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                          isExpanded ? 'rotate-180' : ''
+                        }`} />
+                      </>
+                    )}
+                  </button>
+
+                  {/* Sub-items (only when sidebar is open) */}
+                  {open && isExpanded && (
+                    <div className="mt-0.5 ml-3 pl-3 border-l border-white/10 space-y-0.5">
+                      {item.children.map(child => {
+                        const ChildIcon = child.icon;
+                        return (
+                          <NavLink
+                            key={child.path}
+                            to={child.path}
+                            className={({ isActive }) =>
+                              `flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 ${
+                                isActive
+                                  ? 'bg-blue-600 text-white shadow-sm'
+                                  : 'text-slate-400 hover:bg-white/10 hover:text-white'
+                              }`
+                            }
+                          >
+                            {ChildIcon && <ChildIcon className="w-4 h-4 flex-shrink-0" />}
+                            <span>{child.label}</span>
+                          </NavLink>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            // ── Regular nav item ─────────────────────────────────────────
             return (
               <NavLink
-                key={item.path}
-                to={item.path}
+                key={item.path!}
+                to={item.path!}
                 title={!open ? item.label : undefined}
                 className={({ isActive }) =>
                   `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${

@@ -58,4 +58,10 @@ public class ExaminationService : IExaminationService
 
     public Task<IEnumerable<ClassStudentDto>> GetClassStudentsAsync(int classId)
         => _repo.GetClassStudentsAsync(classId);
+
+    public Task<IEnumerable<ClassDto>> GetAllClassesAsync()
+        => _repo.GetAllClassesAsync();
+
+    public Task<IEnumerable<SectionDto>> GetSectionsByClassAsync(int classId)
+        => _repo.GetSectionsByClassAsync(classId);
 }

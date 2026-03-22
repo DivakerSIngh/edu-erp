@@ -11,6 +11,8 @@ import type {
   Subject,
   ClassStudent,
   BulkResultEntry,
+  ClassItem,
+  SectionItem,
 } from '../types/examination.types';
 
 interface ApiResponse<T> {
@@ -87,6 +89,18 @@ export const examinationService = {
   getClassStudents: async (classId: number) => {
     const { data } = await apiClient.get<ApiResponse<ClassStudent[]>>(
       `${BASE}/classes/${classId}/students`
+    );
+    return data;
+  },
+
+  getAllClasses: async () => {
+    const { data } = await apiClient.get<ApiResponse<ClassItem[]>>(`${BASE}/classes`);
+    return data;
+  },
+
+  getSectionsByClass: async (classId: number) => {
+    const { data } = await apiClient.get<ApiResponse<SectionItem[]>>(
+      `${BASE}/classes/${classId}/sections`
     );
     return data;
   },

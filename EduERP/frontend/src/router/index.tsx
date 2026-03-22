@@ -44,8 +44,16 @@ const Announcements     = React.lazy(() => import('../features/communication/pag
 const Messages          = React.lazy(() => import('../features/communication/pages/MessagesPage'));
 
 const ReportAttendance  = React.lazy(() => import('../features/reports/pages/ReportAttendancePage'));
+const ReportAttendanceStudent = React.lazy(() => import('../features/reports/pages/ReportAttendanceStudentPage'));
+const ReportLowAttendance = React.lazy(() => import('../features/reports/pages/ReportLowAttendancePage'));
 const ReportFees        = React.lazy(() => import('../features/reports/pages/ReportFeesPage'));
+const ReportFeesPayments = React.lazy(() => import('../features/reports/pages/ReportPaymentHistoryPage'));
 const ReportAcademic    = React.lazy(() => import('../features/reports/pages/ReportAcademicPage'));
+const ReportCard        = React.lazy(() => import('../features/reports/pages/ReportCardPage'));
+const ReportSubjectPerf = React.lazy(() => import('../features/reports/pages/ReportSubjectPerformancePage'));
+const ReportEnrollment  = React.lazy(() => import('../features/reports/pages/ReportStudentEnrollmentPage'));
+const ReportDirectory   = React.lazy(() => import('../features/reports/pages/ReportStudentDirectoryPage'));
+const ReportAdmission   = React.lazy(() => import('../features/reports/pages/ReportAdmissionPage'));
 
 // ── Page-level loading fallback ───────────────────────────────────────────────
 const PageLoader = () => (
@@ -219,6 +227,22 @@ export default function AppRouter() {
               }
             />
             <Route
+              path={ROUTES.REPORT_ATTENDANCE_STUDENT}
+              element={
+                <RoleGuard allowedRoles={['Admin', 'Teacher']}>
+                  <ReportAttendanceStudent />
+                </RoleGuard>
+              }
+            />
+            <Route
+              path={ROUTES.REPORT_LOW_ATTENDANCE}
+              element={
+                <RoleGuard allowedRoles={['Admin', 'Teacher']}>
+                  <ReportLowAttendance />
+                </RoleGuard>
+              }
+            />
+            <Route
               path={ROUTES.REPORT_FEES}
               element={
                 <RoleGuard allowedRoles={['Admin']}>
@@ -227,10 +251,58 @@ export default function AppRouter() {
               }
             />
             <Route
+              path={ROUTES.REPORT_FEES_PAYMENTS}
+              element={
+                <RoleGuard allowedRoles={['Admin']}>
+                  <ReportFeesPayments />
+                </RoleGuard>
+              }
+            />
+            <Route
               path={ROUTES.REPORT_ACADEMIC}
               element={
                 <RoleGuard allowedRoles={['Admin', 'Teacher']}>
                   <ReportAcademic />
+                </RoleGuard>
+              }
+            />
+            <Route
+              path={ROUTES.REPORT_ACADEMIC_REPORTCARD}
+              element={
+                <RoleGuard allowedRoles={['Admin', 'Teacher']}>
+                  <ReportCard />
+                </RoleGuard>
+              }
+            />
+            <Route
+              path={ROUTES.REPORT_ACADEMIC_SUBJECTS}
+              element={
+                <RoleGuard allowedRoles={['Admin', 'Teacher']}>
+                  <ReportSubjectPerf />
+                </RoleGuard>
+              }
+            />
+            <Route
+              path={ROUTES.REPORT_STUDENTS_ENROLLMENT}
+              element={
+                <RoleGuard allowedRoles={['Admin', 'Teacher']}>
+                  <ReportEnrollment />
+                </RoleGuard>
+              }
+            />
+            <Route
+              path={ROUTES.REPORT_STUDENTS_DIRECTORY}
+              element={
+                <RoleGuard allowedRoles={['Admin', 'Teacher']}>
+                  <ReportDirectory />
+                </RoleGuard>
+              }
+            />
+            <Route
+              path={ROUTES.REPORT_ADMISSION}
+              element={
+                <RoleGuard allowedRoles={['Admin']}>
+                  <ReportAdmission />
                 </RoleGuard>
               }
             />

@@ -16,10 +16,14 @@ BEGIN
         fs.FeeStructureId,
         fs.FeeName,
         fs.Amount,
+        fs.IsRecurring,
         fs.Frequency,
         fs.DueDate,
+        fs.ClassId,
+        fs.AcademicYearId,
         c.ClassName,
-        ay.YearName AS AcademicYear
+        ay.YearName AS AcademicYear,
+        fs.CreatedAt
     FROM  FeeStructures fs
     JOIN  AcademicYears ay ON fs.AcademicYearId = ay.AcademicYearId
     LEFT JOIN Classes   c  ON fs.ClassId        = c.ClassId
@@ -192,7 +196,7 @@ GO
 
 -- -- usp_Fees_GetDefaulters ----------------------------------------------------
 CREATE OR ALTER PROCEDURE usp_Fees_GetDefaulters
-    @AcademicYearId INT,
+    @AcademicYearId INT = NULL,
     @AsOfDate       DATE = NULL
 AS
 BEGIN
@@ -218,7 +222,7 @@ BEGIN
     WHERE fi.Status         IN ('Pending','PartiallyPaid')
     AND   fi.DueDate        < @AsOfDate
     AND   fi.IsDeleted      = 0
-    AND   s.AcademicYearId  = @AcademicYearId
+    AND   (@AcademicYearId IS NULL OR s.AcademicYearId = @AcademicYearId)
     AND   s.IsDeleted       = 0
     GROUP BY
         s.StudentId, s.EnrollmentNumber, u.FullName, u.Email,

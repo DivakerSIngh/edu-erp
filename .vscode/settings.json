@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^sqlcmd -S \"\\(localdb\\)\\\\MSSQLLocalDB\" -d EduERP -Q \"SELECT AcademicYearId, YearName, IsActive, IsCurrent FROM AcademicYears ORDER BY AcademicYearId;\" 2>&1$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

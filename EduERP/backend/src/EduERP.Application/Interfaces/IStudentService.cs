@@ -7,6 +7,8 @@ public interface IStudentService
 {
     Task<PagedResponseDto<StudentResponseDto>> GetAllAsync(StudentListRequestDto request);
     Task<StudentDetailDto>                     GetByIdAsync(int studentId, int requestingUserId, string requestingRole);
+    Task<StudentDetailDto>                     GetByUserIdAsync(int userId);
+    Task<IEnumerable<StudentResultDto>>        GetMyResultsAsync(int studentId);
     Task<StudentCreatedDto>                    CreateAsync(StudentCreateDto dto, int createdBy);
     Task<StudentResponseDto>                   UpdateAsync(int studentId, StudentUpdateDto dto, int updatedBy);
     Task                                       DeleteAsync(int studentId, int deletedBy);

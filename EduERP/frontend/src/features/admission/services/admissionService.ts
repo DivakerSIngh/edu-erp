@@ -13,7 +13,8 @@ import type {
 } from '../types/admission.types';
 
 interface ApiResponse<T> {
-  success:    boolean;
+  isSuccess:  boolean;
+  success:    boolean;   // some endpoints return this instead
   data:       T;
   message:    string;
   pagination?: {

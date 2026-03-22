@@ -173,3 +173,19 @@ public class ClassStudentDto
     public string EnrollmentNumber { get; init; } = string.Empty;
     public string Section          { get; init; } = string.Empty;
 }
+
+public class ClassDto
+{
+    public int    ClassId       { get; init; }
+    public string ClassName     { get; init; } = string.Empty;
+    public int    GradeLevel    { get; init; }
+    public int    AcademicYearId { get; init; }
+    public string YearName      { get; init; } = string.Empty;
+}
+
+public class SectionDto
+{
+    public int    SectionId    { get; init; }
+    public int    ClassId      { get; init; }
+    public string SectionName  { get; init; } = string.Empty;
+}

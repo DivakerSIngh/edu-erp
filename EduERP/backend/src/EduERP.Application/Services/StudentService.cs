@@ -54,4 +54,13 @@ public class StudentService : IStudentService
 
     public Task DeleteAsync(int studentId, int deletedBy)
         => _repo.SoftDeleteAsync(studentId, deletedBy);
+
+    public async Task<StudentDetailDto> GetByUserIdAsync(int userId)
+    {
+        return await _repo.GetByUserIdAsync(userId)
+               ?? throw new KeyNotFoundException($"Student profile not found for user {userId}.");
+    }
+
+    public Task<IEnumerable<StudentResultDto>> GetMyResultsAsync(int studentId)
+        => _repo.GetMyResultsAsync(studentId);
 }

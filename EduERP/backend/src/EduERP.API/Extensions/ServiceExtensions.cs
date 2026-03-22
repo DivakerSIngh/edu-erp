@@ -141,6 +141,9 @@ public static class ServiceExtensions
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<IAdmissionService, AdmissionService>();
         services.AddScoped<IExaminationService, ExaminationService>();
+        services.AddScoped<IAttendanceService, AttendanceService>();
+        services.AddScoped<IFeesService, FeesService>();
+        services.AddScoped<IReportService, ReportService>();
         return services;
     }
 }

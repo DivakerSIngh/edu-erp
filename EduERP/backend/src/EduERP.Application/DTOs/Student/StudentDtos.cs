@@ -130,3 +130,25 @@ public class StudentCreatedDto
     public int    StudentId        { get; init; }
     public string EnrollmentNumber { get; init; } = string.Empty;
 }
+
+// ── Student portal result row ──────────────────────────────────────────────
+public class StudentResultDto
+{
+    public int     ExaminationId  { get; init; }
+    public string  ExamName       { get; init; } = string.Empty;
+    public string  ExamType       { get; init; } = string.Empty;
+    public DateOnly StartDate     { get; init; }
+    public DateOnly EndDate       { get; init; }
+    public decimal ExamMaxMarks   { get; init; }
+    public decimal PassMarks      { get; init; }
+    public string  ClassName      { get; init; } = string.Empty;
+    public string  AcademicYear   { get; init; } = string.Empty;
+    public int     SubjectId      { get; init; }
+    public string  SubjectName    { get; init; } = string.Empty;
+    public string  SubjectCode    { get; init; } = string.Empty;
+    public decimal MarksObtained  { get; init; }
+    public decimal MaxMarks       { get; init; }
+    public string  Result         { get; init; } = string.Empty;
+    public string? Remarks        { get; init; }
+    public string? Grade          { get; init; }
+}

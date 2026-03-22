@@ -50,6 +50,30 @@ public class ExaminationController : ControllerBase
         return Ok(ApiResponseDto<IEnumerable<ClassStudentDto>>.Success(students));
     }
 
+    // ── Lookup: all classes ───────────────────────────────────────────────────
+
+    /// <summary>Get all classes with their academic year info (used in dropdowns).</summary>
+    [HttpGet("classes")]
+    [Authorize(Roles = "Admin,Teacher")]
+    [ProducesResponseType(typeof(ApiResponseDto<IEnumerable<ClassDto>>), 200)]
+    public async Task<IActionResult> GetAllClasses()
+    {
+        var classes = await _service.GetAllClassesAsync();
+        return Ok(ApiResponseDto<IEnumerable<ClassDto>>.Success(classes));
+    }
+
+    // ── Lookup: sections for a class ─────────────────────────────────────────
+
+    /// <summary>Get sections for a specific class (used in dropdowns).</summary>
+    [HttpGet("classes/{classId:int}/sections")]
+    [Authorize(Roles = "Admin,Teacher")]
+    [ProducesResponseType(typeof(ApiResponseDto<IEnumerable<SectionDto>>), 200)]
+    public async Task<IActionResult> GetSections(int classId)
+    {
+        var sections = await _service.GetSectionsByClassAsync(classId);
+        return Ok(ApiResponseDto<IEnumerable<SectionDto>>.Success(sections));
+    }
+
     // ── List ─────────────────────────────────────────────────────────────────
 
     /// <summary>Get paginated list of examinations with optional filters.</summary>

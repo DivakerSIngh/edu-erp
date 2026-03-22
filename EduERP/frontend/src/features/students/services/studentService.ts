@@ -3,6 +3,7 @@ import type {
   StudentListItem,
   StudentDetail,
   StudentCreated,
+  StudentResult,
   StudentListParams,
   StudentCreateFormData,
   StudentUpdateFormData,
@@ -36,6 +37,16 @@ export const studentService = {
 
   getById: async (id: number) => {
     const { data } = await apiClient.get<ApiResponse<StudentDetail>>(`/students/${id}`);
+    return data;
+  },
+
+  getMyProfile: async () => {
+    const { data } = await apiClient.get<ApiResponse<StudentDetail>>('/students/me');
+    return data;
+  },
+
+  getMyResults: async () => {
+    const { data } = await apiClient.get<ApiResponse<StudentResult[]>>('/students/me/results');
     return data;
   },
 

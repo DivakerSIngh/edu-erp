@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../../hooks/useAuth';
+import StudentDashboardPage from './StudentDashboardPage';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../router/routeConstants';
 import {
@@ -168,6 +169,9 @@ function getGreeting() {
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const { user } = useAuth();
+
+  // Show role-specific dashboard
+  if (user?.role === 'Student') return <StudentDashboardPage />;
 
   return (
     <div className="space-y-6">

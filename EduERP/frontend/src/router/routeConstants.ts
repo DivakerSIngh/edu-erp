@@ -48,10 +48,18 @@ export const ROUTES = {
   MESSAGES:           '/communication/messages',
 
   // Reports
-  REPORTS:            '/reports',
-  REPORT_ATTENDANCE:  '/reports/attendance',
-  REPORT_FEES:        '/reports/fees',
-  REPORT_ACADEMIC:    '/reports/academic',
+  REPORTS:                        '/reports',
+  REPORT_ATTENDANCE:              '/reports/attendance/class',
+  REPORT_ATTENDANCE_STUDENT:      '/reports/attendance/student',
+  REPORT_LOW_ATTENDANCE:          '/reports/attendance/low',
+  REPORT_FEES:                    '/reports/fees/summary',
+  REPORT_FEES_PAYMENTS:           '/reports/fees/payments',
+  REPORT_ACADEMIC:                '/reports/academic/class',
+  REPORT_ACADEMIC_REPORTCARD:     '/reports/academic/reportcard',
+  REPORT_ACADEMIC_SUBJECTS:       '/reports/academic/subjects',
+  REPORT_STUDENTS_ENROLLMENT:     '/reports/students/enrollment',
+  REPORT_STUDENTS_DIRECTORY:      '/reports/students/directory',
+  REPORT_ADMISSION:               '/reports/admission',
 
   // Profile
   PROFILE: '/profile',

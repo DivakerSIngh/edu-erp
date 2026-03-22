@@ -38,6 +38,34 @@ public class StudentController : ControllerBase
         return Ok(ApiResponseDto<PagedResponseDto<StudentResponseDto>>.Success(result));
     }
 
+    // ── Get My Profile (student-portal) ──────────────────────────────────────
+
+    /// <summary>Get the logged-in student's own profile.</summary>
+    [HttpGet("me")]
+    [Authorize(Roles = "Student")]
+    [ProducesResponseType(typeof(ApiResponseDto<StudentDetailDto>), 200)]
+    [ProducesResponseType(typeof(ApiResponseDto<object>), 404)]
+    public async Task<IActionResult> GetMyProfile()
+    {
+        var userId  = User.GetUserId();
+        var student = await _studentService.GetByUserIdAsync(userId);
+        return Ok(ApiResponseDto<StudentDetailDto>.Success(student));
+    }
+
+    // ── Get My Results (student-portal) ──────────────────────────────────────
+
+    /// <summary>Get all published exam results for the logged-in student.</summary>
+    [HttpGet("me/results")]
+    [Authorize(Roles = "Student")]
+    [ProducesResponseType(typeof(ApiResponseDto<IEnumerable<StudentResultDto>>), 200)]
+    public async Task<IActionResult> GetMyResults()
+    {
+        var userId  = User.GetUserId();
+        var student = await _studentService.GetByUserIdAsync(userId);
+        var results = await _studentService.GetMyResultsAsync(student.StudentId);
+        return Ok(ApiResponseDto<IEnumerable<StudentResultDto>>.Success(results));
+    }
+
     // ── Get By ID ─────────────────────────────────────────────────────────────
 
     /// <summary>Get a student's full profile by ID.</summary>

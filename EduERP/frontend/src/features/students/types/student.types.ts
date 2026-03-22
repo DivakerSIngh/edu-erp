@@ -88,3 +88,24 @@ export interface StudentUpdateFormData {
   sectionId?:  number;
   status?:     StudentStatus;
 }
+
+// ── Student portal ───────────────────────────────────────────────────
+export interface StudentResult {
+  examinationId: number;
+  examName:      string;
+  examType:      string;
+  startDate:     string;
+  endDate:       string;
+  examMaxMarks:  number;
+  passMarks:     number;
+  className:     string;
+  academicYear:  string;
+  subjectId:     number;
+  subjectName:   string;
+  subjectCode:   string;
+  marksObtained: number;
+  maxMarks:      number;
+  result:        string;
+  remarks:       string | null;
+  grade:         string | null;
+}

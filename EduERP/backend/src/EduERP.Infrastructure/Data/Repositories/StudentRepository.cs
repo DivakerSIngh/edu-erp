@@ -90,6 +90,27 @@ public class StudentRepository : BaseRepository, IStudentRepository
         await ExecuteAsync("usp_Student_Update", parameters);
     }
 
+    public async Task<StudentDetailDto?> GetByUserIdAsync(int userId)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("@UserId", userId);
+
+        using var multi = await QueryMultipleAsync("usp_Student_GetByUserId", parameters);
+
+        var student = await multi.ReadFirstOrDefaultAsync<StudentDetailDto>();
+        if (student is null) return null;
+
+        student.Parents = (await multi.ReadAsync<ParentSummaryDto>()).ToList();
+        return student;
+    }
+
+    public async Task<IEnumerable<StudentResultDto>> GetMyResultsAsync(int studentId)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("@StudentId", studentId);
+        return await QueryAsync<StudentResultDto>("usp_Student_GetMyResults", parameters);
+    }
+
     public async Task SoftDeleteAsync(int studentId, int deletedBy)
     {
         var parameters = new DynamicParameters();
