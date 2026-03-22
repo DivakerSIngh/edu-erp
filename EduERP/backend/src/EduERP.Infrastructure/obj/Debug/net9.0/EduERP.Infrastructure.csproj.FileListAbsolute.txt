@@ -15,3 +15,4 @@ D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.I
 D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\refint\EduERP.Infrastructure.dll
 D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.Infrastructure.pdb
 D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\ref\EduERP.Infrastructure.dll
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.Infrastructure.sourcelink.json

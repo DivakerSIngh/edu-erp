@@ -104,3 +104,4 @@ D:\University\EduERP\backend\src\EduERP.API\obj\Debug\net9.0\refint\EduERP.API.d
 D:\University\EduERP\backend\src\EduERP.API\obj\Debug\net9.0\EduERP.API.pdb
 D:\University\EduERP\backend\src\EduERP.API\obj\Debug\net9.0\EduERP.API.genruntimeconfig.cache
 D:\University\EduERP\backend\src\EduERP.API\obj\Debug\net9.0\ref\EduERP.API.dll
+D:\University\EduERP\backend\src\EduERP.API\obj\Debug\net9.0\EduERP.API.sourcelink.json

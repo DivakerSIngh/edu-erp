@@ -13,3 +13,4 @@ D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.Appl
 D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\refint\EduERP.Application.dll
 D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.Application.pdb
 D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\ref\EduERP.Application.dll
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.Application.sourcelink.json

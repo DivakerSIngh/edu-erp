@@ -9,3 +9,4 @@ D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\EduERP.Domain.dl
 D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\refint\EduERP.Domain.dll
 D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\EduERP.Domain.pdb
 D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\ref\EduERP.Domain.dll
+D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\EduERP.Domain.sourcelink.json
