@@ -128,17 +128,19 @@ export default function ExaminationResultsPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center py-20">
-        <Spinner size="lg" className="text-purple-500" />
-      </div>
-    );
+    return <div className="-m-6 flex items-center justify-center min-h-[60vh]"><Spinner /></div>;
   }
 
   if (loadError || !exam) {
     return (
-      <div className="rounded-xl bg-red-50 p-6 text-center text-sm text-red-700">
-        {loadError ?? 'Examination not found.'}
+      <div className="-m-6 flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <p className="text-red-600 font-medium">{loadError ?? 'Examination not found.'}</p>
+        <button
+          onClick={() => navigate(ROUTES.EXAMINATION_DETAIL.replace(':id', String(exam?.examinationId ?? id)))}
+          className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+        >
+          <ArrowLeftIcon className="h-4 w-4" /> Back
+        </button>
       </div>
     );
   }
@@ -146,32 +148,31 @@ export default function ExaminationResultsPage() {
   const filledCount = rows.filter(r => r.marksObtained !== '').length;
 
   return (
-    <div className="mx-auto max-w-4xl space-y-5">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="-m-6 flex flex-col min-h-[calc(100vh-0px)] bg-gray-50">
+
+      {/* ── Header bar ────────────────────────────────────────────────────── */}
+      <div className="bg-white border-b border-gray-200 px-8 py-5 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate(ROUTES.EXAMINATION_DETAIL.replace(':id', String(exam.examinationId)))}
-            className="flex items-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+            className="flex items-center gap-1.5 text-indigo-200 hover:text-white text-sm transition-colors px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl"
           >
             <ArrowLeftIcon className="h-4 w-4" />
-            Back
           </button>
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-100">
-              <ClipboardDocumentListIcon className="h-5 w-5 text-purple-600" />
+            <div className="h-9 w-9 rounded-xl bg-indigo-100 flex items-center justify-center shrink-0">
+              <ClipboardDocumentListIcon className="h-5 w-5 text-indigo-600" />
             </div>
             <div>
-              <h1 className="text-base font-bold text-gray-900">{exam.examName}</h1>
-              <p className="text-xs text-gray-500">{exam.className} · {exam.academicYear}</p>
+              <h1 className="text-xl font-bold text-gray-900">{exam.examName}</h1>
+              <p className="text-sm text-gray-500 mt-0.5">{exam.className} · {exam.academicYear}</p>
             </div>
           </div>
         </div>
-
         <button
           onClick={handleSave}
           disabled={saving || selectedSub === '' || filledCount === 0}
-          className="flex items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-purple-700 disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
         >
           {saving ? (
             <><Spinner size="sm" className="text-white" /> Saving…</>
@@ -181,132 +182,135 @@ export default function ExaminationResultsPage() {
         </button>
       </div>
 
-      {/* Subject selector + stats */}
-      <div className="flex flex-wrap items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="flex items-center gap-2 min-w-[200px] flex-1">
-          <label className="text-sm font-semibold text-gray-600 whitespace-nowrap">Subject</label>
-          <select
-            value={selectedSub}
-            onChange={e => setSelectedSub(e.target.value === '' ? '' : Number(e.target.value))}
-            className="flex-1 rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-purple-400 focus:ring-1 focus:ring-purple-400 outline-none"
-          >
-            <option value="">Select subject…</option>
-            {subjects.map(s => (
-              <option key={s.subjectId} value={s.subjectId}>{s.subjectCode} — {s.subjectName}</option>
-            ))}
-          </select>
-        </div>
+      {/* ── Body ───────────────────────────────────────────────────────────────── */}
+      <div className="flex-1 overflow-auto">
+        <div className="max-w-4xl mx-auto px-8 py-6 space-y-5">
 
-        <div className="flex items-center gap-1.5 text-sm text-gray-500">
-          <UserGroupIcon className="h-4 w-4" />
-          <span><span className="font-semibold text-gray-700">{filledCount}</span>/{rows.length} filled</span>
-        </div>
-
-        <div className="flex items-center gap-1.5 text-sm">
-          <span className="text-gray-500">Max Marks:</span>
-          <span className="font-semibold text-gray-700">{exam.maxMarks}</span>
-          <span className="text-gray-400">·</span>
-          <span className="text-gray-500">Pass:</span>
-          <span className="font-semibold text-gray-700">{exam.passMarks}</span>
-        </div>
-      </div>
-
-      {/* Status messages */}
-      {saveSuccess && (
-        <div className="flex items-center gap-2 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
-          <CheckCircleIcon className="h-4 w-4 flex-shrink-0" />
-          Results saved successfully!
-        </div>
-      )}
-      {saveError && (
-        <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
-          {saveError}
-        </div>
-      )}
-
-      {/* Results grid */}
-      {selectedSub === '' ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-white py-16 text-gray-400">
-          <ClipboardDocumentListIcon className="h-10 w-10 mb-2" />
-          <p className="text-sm font-medium">Select a subject to enter results</p>
-        </div>
-      ) : (
-        <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">#</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Student</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Enrollment</th>
-                  <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wide w-28">Marks Obtained</th>
-                  <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wide w-24">Max Marks</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Remarks</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row, idx) => {
-                  const marks = parseFloat(row.marksObtained);
-                  const maxM  = parseFloat(row.maxMarks) || exam.maxMarks;
-                  const isPassing = !isNaN(marks) && marks >= exam.passMarks;
-                  const hasMarks  = row.marksObtained !== '';
-                  return (
-                    <tr key={row.studentId} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                      <td className="px-4 py-2.5 text-xs text-gray-400 tabular-nums">{idx + 1}</td>
-                      <td className="px-4 py-2.5 text-gray-900 font-medium">{row.studentName}</td>
-                      <td className="px-4 py-2.5 text-gray-500 text-xs tabular-nums">{row.enrollmentNumber}</td>
-                      <td className="px-4 py-2.5 text-center">
-                        <input
-                          type="number"
-                          min="0"
-                          max={maxM}
-                          step="0.5"
-                          value={row.marksObtained}
-                          onChange={e => updateRow(idx, 'marksObtained', e.target.value)}
-                          className={`w-20 text-center rounded-lg border px-2 py-1 text-sm outline-none transition focus:ring-1 focus:ring-purple-400 ${
-                            hasMarks
-                              ? isPassing
-                                ? 'border-green-300 bg-green-50 text-green-700'
-                                : 'border-red-300 bg-red-50 text-red-700'
-                              : 'border-gray-300 bg-gray-50'
-                          }`}
-                          placeholder="—"
-                        />
-                      </td>
-                      <td className="px-4 py-2.5 text-center">
-                        <input
-                          type="number"
-                          min="1"
-                          step="0.5"
-                          value={row.maxMarks}
-                          onChange={e => updateRow(idx, 'maxMarks', e.target.value)}
-                          className="w-16 text-center rounded-lg border border-gray-300 bg-gray-50 px-2 py-1 text-sm outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400"
-                        />
-                      </td>
-                      <td className="px-4 py-2.5">
-                        <input
-                          type="text"
-                          maxLength={500}
-                          value={row.remarks}
-                          onChange={e => updateRow(idx, 'remarks', e.target.value)}
-                          className="w-full rounded-lg border border-gray-300 bg-gray-50 px-2 py-1 text-sm outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400"
-                          placeholder="Optional"
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          {/* Subject selector + stats */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2 min-w-[200px] flex-1">
+              <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide whitespace-nowrap">Subject</label>
+              <select
+                value={selectedSub}
+                onChange={e => setSelectedSub(e.target.value === '' ? '' : Number(e.target.value))}
+                className="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+              >
+                <option value="">Select subject…</option>
+                {subjects.map(s => (
+                  <option key={s.subjectId} value={s.subjectId}>{s.subjectCode} — {s.subjectName}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex items-center gap-1.5 text-sm text-gray-500">
+              <UserGroupIcon className="h-4 w-4" />
+              <span><span className="font-semibold text-gray-700">{filledCount}</span>/{rows.length} filled</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-sm">
+              <span className="text-gray-500">Max:</span>
+              <span className="font-semibold text-gray-700">{exam.maxMarks}</span>
+              <span className="text-gray-400">·</span>
+              <span className="text-gray-500">Pass:</span>
+              <span className="font-semibold text-gray-700">{exam.passMarks}</span>
+            </div>
           </div>
 
-          {rows.length === 0 && (
-            <div className="text-center py-10 text-sm text-gray-400">
-              No students enrolled in this class.
+          {/* Status messages */}
+          {saveSuccess && (
+            <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-700">
+              <CheckCircleIcon className="h-4 w-4 shrink-0" />
+              Results saved successfully!
+            </div>
+          )}
+          {saveError && (
+            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              {saveError}
+            </div>
+          )}
+
+          {/* Results grid */}
+          {selectedSub === '' ? (
+            <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 bg-white py-16 text-gray-400">
+              <ClipboardDocumentListIcon className="h-10 w-10 mb-2" />
+              <p className="text-sm font-medium">Select a subject to enter results</p>
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-50 border-b border-gray-200 text-xs uppercase tracking-wide text-gray-500 sticky top-0">
+                    <tr>
+                      <th className="px-4 py-3 text-left font-semibold">#</th>
+                      <th className="px-4 py-3 text-left font-semibold">Student</th>
+                      <th className="px-4 py-3 text-left font-semibold">Enrollment</th>
+                      <th className="px-4 py-3 text-center font-semibold w-28">Marks Obtained</th>
+                      <th className="px-4 py-3 text-center font-semibold w-24">Max Marks</th>
+                      <th className="px-4 py-3 text-left font-semibold">Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {rows.map((row, idx) => {
+                      const marks   = parseFloat(row.marksObtained);
+                      const maxM    = parseFloat(row.maxMarks) || exam.maxMarks;
+                      const isPassing = !isNaN(marks) && marks >= exam.passMarks;
+                      const hasMarks  = row.marksObtained !== '';
+                      return (
+                        <tr key={row.studentId} className="hover:bg-blue-50 transition-colors">
+                          <td className="px-4 py-2.5 text-xs text-gray-400 tabular-nums">{idx + 1}</td>
+                          <td className="px-4 py-2.5 text-gray-900 font-medium">{row.studentName}</td>
+                          <td className="px-4 py-2.5 text-gray-500 text-xs tabular-nums">{row.enrollmentNumber}</td>
+                          <td className="px-4 py-2.5 text-center">
+                            <input
+                              type="number"
+                              min="0"
+                              max={maxM}
+                              step="0.5"
+                              value={row.marksObtained}
+                              onChange={e => updateRow(idx, 'marksObtained', e.target.value)}
+                              className={`w-20 text-center rounded-xl border px-2 py-1 text-sm outline-none transition focus:ring-2 focus:ring-blue-500 ${
+                                hasMarks
+                                  ? isPassing
+                                    ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+                                    : 'border-red-300 bg-red-50 text-red-700'
+                                  : 'border-gray-300 bg-gray-50'
+                              }`}
+                              placeholder="—"
+                            />
+                          </td>
+                          <td className="px-4 py-2.5 text-center">
+                            <input
+                              type="number"
+                              min="1"
+                              step="0.5"
+                              value={row.maxMarks}
+                              onChange={e => updateRow(idx, 'maxMarks', e.target.value)}
+                              className="w-16 text-center rounded-xl border border-gray-300 bg-gray-50 px-2 py-1 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                            />
+                          </td>
+                          <td className="px-4 py-2.5">
+                            <input
+                              type="text"
+                              maxLength={500}
+                              value={row.remarks}
+                              onChange={e => updateRow(idx, 'remarks', e.target.value)}
+                              className="w-full rounded-xl border border-gray-300 bg-gray-50 px-2 py-1 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                              placeholder="Optional"
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              {rows.length === 0 && (
+                <div className="text-center py-10 text-sm text-gray-400">
+                  No students enrolled in this class.
+                </div>
+              )}
             </div>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

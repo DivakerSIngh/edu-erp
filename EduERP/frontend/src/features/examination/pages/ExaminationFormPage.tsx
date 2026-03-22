@@ -14,6 +14,7 @@ import {
   AcademicCapIcon,
   CheckCircleIcon,
   CalendarDaysIcon,
+  StarIcon,
 } from '@heroicons/react/24/outline';
 
 // ── Schema ────────────────────────────────────────────────────────────────────
@@ -58,15 +59,13 @@ function Field({ label, required, error, children }: {
 function SectionHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
   return (
     <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
-      <div className="text-gray-400">{icon}</div>
-      <h3 className="text-sm font-semibold text-gray-700">{title}</h3>
+      <div className="text-indigo-500">{icon}</div>
+      <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide">{title}</h3>
     </div>
   );
 }
 
-const INPUT =
-  'w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm ' +
-  'transition focus:border-purple-400 focus:bg-white focus:ring-1 focus:ring-purple-400 outline-none';
+const inputCls = 'w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow';
 
 // ── Main component ────────────────────────────────────────────────────────────
 
@@ -158,144 +157,168 @@ export default function ExaminationFormPage() {
   };
 
   if (pageLoading) {
-    return (
-      <div className="flex justify-center py-20">
-        <Spinner size="lg" className="text-purple-500" />
-      </div>
-    );
+    return <div className="-m-6 flex items-center justify-center min-h-[60vh]"><Spinner /></div>;
   }
 
   if (pageError) {
     return (
-      <div className="rounded-xl bg-red-50 p-6 text-center text-sm text-red-700">
-        {pageError}
+      <div className="-m-6 flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <p className="text-red-600 font-medium">{pageError}</p>
+        <button onClick={() => navigate(ROUTES.EXAMINATIONS)} className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+          <ArrowLeftIcon className="h-4 w-4" /> Back to Examinations
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
-        >
-          <ArrowLeftIcon className="h-4 w-4" />
-          Back
-        </button>
-        <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-100">
-            <AcademicCapIcon className="h-5 w-5 text-purple-600" />
-          </div>
-          <h1 className="text-lg font-bold text-gray-900">
-            {isEdit ? 'Edit Examination' : 'New Examination'}
-          </h1>
-        </div>
-      </div>
+    <div className="-m-6 flex min-h-[calc(100vh-0px)] bg-gray-50">
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        {/* Basic Info */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-          <SectionHeader icon={<AcademicCapIcon className="h-4 w-4" />} title="Examination Details" />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="sm:col-span-2">
-              <Field label="Examination Name" required error={errors.examName?.message}>
-                <input {...register('examName')} placeholder="e.g. Mid-Term Examination 2026" className={INPUT} />
+      {/* ── Sidebar ────────────────────────────────────────────────── */}
+      <aside className="hidden lg:flex flex-col w-72 shrink-0 bg-gradient-to-b from-indigo-600 to-blue-700 p-8 text-white">
+        <button
+          onClick={() => navigate(ROUTES.EXAMINATIONS)}
+          className="flex items-center gap-2 text-indigo-200 hover:text-white text-sm mb-8 transition-colors w-fit"
+        >
+          <ArrowLeftIcon className="h-4 w-4" /> Back to Examinations
+        </button>
+
+        <div className="mb-8">
+          <div className="h-16 w-16 rounded-2xl bg-white/20 ring-2 ring-white/30 flex items-center justify-center mb-4">
+            <AcademicCapIcon className="h-8 w-8 text-white" />
+          </div>
+          <h1 className="text-2xl font-extrabold">{isEdit ? 'Edit Examination' : 'New Examination'}</h1>
+          <p className="mt-2 text-indigo-200 text-sm leading-relaxed">
+            {isEdit
+              ? 'Update the examination details below.'
+              : 'Fill in the details to create a new examination.'}
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {[
+            { icon: <AcademicCapIcon    className="h-4 w-4" />, label: 'Exam Details' },
+            { icon: <CalendarDaysIcon   className="h-4 w-4" />, label: 'Schedule' },
+            { icon: <StarIcon           className="h-4 w-4" />, label: 'Marks Configuration' },
+          ].map((step, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <div className="h-7 w-7 rounded-full bg-white/20 flex items-center justify-center shrink-0 text-white">
+                {step.icon}
+              </div>
+              <span className="text-sm text-indigo-100">{step.label}</span>
+            </div>
+          ))}
+        </div>
+      </aside>
+
+      {/* ── Form area ──────────────────────────────────────────────── */}
+      <div className="flex-1 overflow-auto">
+        <div className="lg:hidden px-6 pt-5">
+          <button onClick={() => navigate(ROUTES.EXAMINATIONS)} className="flex items-center gap-1.5 text-blue-600 hover:underline text-sm">
+            <ArrowLeftIcon className="h-4 w-4" /> Back to Examinations
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto px-6 py-8 space-y-8">
+
+          {submitError && (
+            <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">
+              {submitError}
+            </div>
+          )}
+
+          {/* ── Section: Exam Details ────────────────────────────────── */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <SectionHeader icon={<AcademicCapIcon className="h-5 w-5" />} title="Examination Details" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="col-span-2">
+                <Field label="Examination Name" required error={errors.examName?.message}>
+                  <input {...register('examName')} placeholder="e.g. Mid-Term Examination 2026" className={inputCls} />
+                </Field>
+              </div>
+              <Field label="Exam Type" required error={errors.examType?.message}>
+                <select {...register('examType')} className={inputCls}>
+                  <option value="">Select type</option>
+                  {EXAM_TYPES.map(t => (
+                    <option key={t.value} value={t.value}>{t.label}</option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="Academic Year" required error={errors.academicYearId?.message}>
+                <select {...register('academicYearId')} className={inputCls}>
+                  <option value="">Select year</option>
+                  {years.map(y => (
+                    <option key={y.academicYearId} value={y.academicYearId}>{y.yearName}</option>
+                  ))}
+                </select>
+              </Field>
+              <div className="col-span-2">
+                <Field label="Class" required error={errors.classId?.message}>
+                  <select
+                    {...register('classId')}
+                    disabled={!academicYearId || classes.length === 0}
+                    className={inputCls + ' disabled:opacity-50'}
+                  >
+                    <option value="">
+                      {!academicYearId ? 'Select year first' : classes.length === 0 ? 'Loading…' : 'Select class'}
+                    </option>
+                    {classes.map(c => (
+                      <option key={c.classId} value={c.classId}>{c.className}</option>
+                    ))}
+                  </select>
+                </Field>
+              </div>
+            </div>
+          </div>
+
+          {/* ── Section: Schedule ─────────────────────────────────────── */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <SectionHeader icon={<CalendarDaysIcon className="h-5 w-5" />} title="Schedule" />
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Start Date" required error={errors.startDate?.message}>
+                <input type="date" {...register('startDate')} className={inputCls} />
+              </Field>
+              <Field label="End Date" required error={errors.endDate?.message}>
+                <input type="date" {...register('endDate')} className={inputCls} />
               </Field>
             </div>
-
-            <Field label="Exam Type" required error={errors.examType?.message}>
-              <select {...register('examType')} className={INPUT}>
-                <option value="">Select type</option>
-                {EXAM_TYPES.map(t => (
-                  <option key={t.value} value={t.value}>{t.label}</option>
-                ))}
-              </select>
-            </Field>
-
-            <Field label="Academic Year" required error={errors.academicYearId?.message}>
-              <select {...register('academicYearId')} className={INPUT}>
-                <option value="">Select year</option>
-                {years.map(y => (
-                  <option key={y.academicYearId} value={y.academicYearId}>{y.yearName}</option>
-                ))}
-              </select>
-            </Field>
-
-            <Field label="Class" required error={errors.classId?.message}>
-              <select
-                {...register('classId')}
-                disabled={!academicYearId || classes.length === 0}
-                className={INPUT + ' disabled:opacity-50'}
-              >
-                <option value="">
-                  {!academicYearId ? 'Select year first' : classes.length === 0 ? 'Loading…' : 'Select class'}
-                </option>
-                {classes.map(c => (
-                  <option key={c.classId} value={c.classId}>{c.className}</option>
-                ))}
-              </select>
-            </Field>
           </div>
-        </div>
 
-        {/* Dates */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-          <SectionHeader icon={<CalendarDaysIcon className="h-4 w-4" />} title="Schedule" />
-          <div className="grid grid-cols-2 gap-4">
-            <Field label="Start Date" required error={errors.startDate?.message}>
-              <input type="date" {...register('startDate')} className={INPUT} />
-            </Field>
-            <Field label="End Date" required error={errors.endDate?.message}>
-              <input type="date" {...register('endDate')} className={INPUT} />
-            </Field>
+          {/* ── Section: Marks Configuration ──────────────────────────── */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <SectionHeader icon={<StarIcon className="h-5 w-5" />} title="Marks Configuration" />
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Maximum Marks" required error={errors.maxMarks?.message}>
+                <input type="number" step="0.5" min="1" {...register('maxMarks')} className={inputCls} />
+              </Field>
+              <Field label="Pass Marks" required error={errors.passMarks?.message}>
+                <input type="number" step="0.5" min="1" {...register('passMarks')} className={inputCls} />
+              </Field>
+            </div>
           </div>
-        </div>
 
-        {/* Marks */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-          <SectionHeader icon={<CheckCircleIcon className="h-4 w-4" />} title="Marks Configuration" />
-          <div className="grid grid-cols-2 gap-4">
-            <Field label="Maximum Marks" required error={errors.maxMarks?.message}>
-              <input type="number" step="0.5" min="1" {...register('maxMarks')} className={INPUT} />
-            </Field>
-            <Field label="Pass Marks" required error={errors.passMarks?.message}>
-              <input type="number" step="0.5" min="1" {...register('passMarks')} className={INPUT} />
-            </Field>
+          {/* ── Submit ─────────────────────────────────────────────────── */}
+          <div className="flex gap-3 pb-2">
+            <button
+              type="button"
+              onClick={() => navigate(ROUTES.EXAMINATIONS)}
+              disabled={isSubmitting}
+              className="flex-1 py-3 text-sm font-semibold border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 py-3 text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+            >
+              {isSubmitting ? <Spinner /> : <CheckCircleIcon className="h-4 w-4" />}
+              {isEdit ? 'Save Changes' : 'Create Examination'}
+            </button>
           </div>
-        </div>
 
-        {/* Error */}
-        {submitError && (
-          <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
-            {submitError}
-          </div>
-        )}
-
-        {/* Actions */}
-        <div className="flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            disabled={isSubmitting}
-            className="rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="flex items-center gap-2 rounded-xl bg-purple-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-purple-700 disabled:opacity-50"
-          >
-            {isSubmitting ? (
-              <><Spinner size="sm" className="text-white" /> Saving…</>
-            ) : (
-              <><CheckCircleIcon className="h-4 w-4" /> {isEdit ? 'Update' : 'Create'} Examination</>
-            )}
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

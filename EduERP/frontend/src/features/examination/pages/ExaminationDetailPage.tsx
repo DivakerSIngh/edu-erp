@@ -15,22 +15,21 @@ import {
   LockClosedIcon,
   CalendarDaysIcon,
   UserGroupIcon,
+  StarIcon,
+  CheckCircleIcon,
+  ClockIcon,
 } from '@heroicons/react/24/outline';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-const TYPE_COLORS: Record<string, string> = {
-  Unit:     'bg-sky-100 text-sky-700',
-  MidTerm:  'bg-amber-100 text-amber-700',
-  Final:    'bg-purple-100 text-purple-700',
-  Remedial: 'bg-pink-100 text-pink-700',
-};
-
-function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
+function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: React.ReactNode }) {
   return (
-    <div className="flex justify-between py-2.5 border-b border-gray-50 last:border-0">
-      <span className="text-sm text-gray-500 font-medium">{label}</span>
-      <span className="text-sm text-gray-900 text-right">{value}</span>
+    <div className="flex items-start gap-3 py-2.5 border-b border-gray-50 last:border-0">
+      <div className="mt-0.5 shrink-0 text-gray-400">{icon}</div>
+      <div className="min-w-0">
+        <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">{label}</p>
+        <p className="text-sm text-gray-800 font-medium">{value ?? '—'}</p>
+      </div>
     </div>
   );
 }
@@ -67,6 +66,7 @@ export default function ExaminationDetailPage() {
   const [publishing,    setPublishing]    = useState(false);
   const [deleting,      setDeleting]      = useState(false);
   const [showDeleteMod, setShowDeleteMod] = useState(false);
+  const [publishOk,     setPublishOk]     = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -89,8 +89,10 @@ export default function ExaminationDetailPage() {
     try {
       const updated = await examinationService.publish(+id, !exam.isPublished);
       setExam(updated.data);
+      setPublishOk(true);
+      setTimeout(() => setPublishOk(false), 3000);
     } catch {
-      // ignore — keep current state
+      // ignore
     } finally {
       setPublishing(false);
     }
@@ -109,151 +111,143 @@ export default function ExaminationDetailPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center py-20">
-        <Spinner size="lg" className="text-purple-500" />
-      </div>
-    );
+    return <div className="-m-6 flex items-center justify-center min-h-[60vh]"><Spinner /></div>;
   }
 
   if (error || !exam) {
     return (
-      <div className="rounded-xl bg-red-50 p-6 text-center text-sm text-red-700">
-        {error ?? 'Examination not found.'}
+      <div className="-m-6 flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <p className="text-red-600 font-medium">{error ?? 'Examination not found.'}</p>
+        <button onClick={() => navigate(ROUTES.EXAMINATIONS)} className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+          <ArrowLeftIcon className="h-4 w-4" /> Back to Examinations
+        </button>
       </div>
     );
   }
 
   const passCount = results.filter(r => r.result === 'Pass').length;
   const failCount = results.filter(r => r.result === 'Fail').length;
+  const initials  = exam.examName.split(' ').slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
 
   return (
-    <div className="mx-auto max-w-3xl space-y-5">
-      {/* ── Header ── */}
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate(ROUTES.EXAMINATIONS)}
-            className="flex items-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
-          >
-            <ArrowLeftIcon className="h-4 w-4" />
-            Back
-          </button>
-          <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-100">
-              <AcademicCapIcon className="h-5 w-5 text-purple-600" />
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-gray-900 leading-tight">{exam.examName}</h1>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${TYPE_COLORS[exam.examType] ?? 'bg-gray-100 text-gray-600'}`}>
-                  {exam.examType}
+    <div className="-m-6 flex flex-col min-h-[calc(100vh-0px)] bg-gray-50">
+
+      {/* ── Banner ──────────────────────────────────────────────────────────── */}
+      <div className="bg-gradient-to-r from-indigo-600 to-blue-600 px-8 pt-6 pb-16 shrink-0">
+        <button
+          onClick={() => navigate(ROUTES.EXAMINATIONS)}
+          className="flex items-center gap-1.5 text-indigo-200 hover:text-white text-sm mb-5 transition-colors"
+        >
+          <ArrowLeftIcon className="h-4 w-4" /> Back to Examinations
+        </button>
+        <div className="flex items-center gap-5">
+          <div className="h-16 w-16 rounded-2xl bg-white/20 ring-2 ring-white/40 flex items-center justify-center shrink-0">
+            <span className="text-white text-2xl font-bold">{initials}</span>
+          </div>
+          <div className="flex-1">
+            <h1 className="text-2xl font-extrabold text-white">{exam.examName}</h1>
+            <p className="text-indigo-200 text-sm mt-0.5">{exam.className} · {exam.academicYear}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <span className="inline-flex items-center rounded-full bg-white/20 text-white text-xs px-2.5 py-0.5 font-medium">
+                {exam.examType}
+              </span>
+              {exam.isPublished ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/80 text-white text-xs px-2.5 py-0.5 font-medium">
+                  <CheckBadgeIcon className="h-3 w-3" /> Published
                 </span>
-                {exam.isPublished ? (
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">Published</span>
-                ) : (
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">Draft</span>
-                )}
-              </div>
+              ) : (
+                <span className="inline-flex items-center rounded-full bg-white/20 text-white text-xs px-2.5 py-0.5 font-medium">
+                  Draft
+                </span>
+              )}
             </div>
           </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className="flex flex-wrap items-center gap-2">
-          {(isAdmin || isTeacher) && (
-            <button
-              onClick={() => navigate(ROUTES.EXAMINATION_RESULTS.replace(':id', String(exam.examinationId)))}
-              className="flex items-center gap-1.5 rounded-xl border border-purple-200 bg-purple-50 px-3 py-2 text-sm font-medium text-purple-700 hover:bg-purple-100"
-            >
-              <ClipboardDocumentListIcon className="h-4 w-4" />
-              Enter Results
-            </button>
-          )}
-          {isAdmin && (
-            <>
+          <div className="flex flex-wrap gap-2 shrink-0">
+            {(isAdmin || isTeacher) && (
               <button
-                onClick={handlePublishToggle}
-                disabled={publishing}
-                className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium transition disabled:opacity-50 ${
-                  exam.isPublished
-                    ? 'border border-gray-200 text-gray-700 hover:bg-gray-50'
-                    : 'border border-green-200 bg-green-50 text-green-700 hover:bg-green-100'
-                }`}
+                onClick={() => navigate(ROUTES.EXAMINATION_RESULTS.replace(':id', String(exam.examinationId)))}
+                className="flex items-center gap-1.5 px-3 py-2 bg-white/20 hover:bg-white/30 text-white text-sm font-medium rounded-xl transition-colors"
               >
-                {publishing ? (
-                  <Spinner size="sm" className={exam.isPublished ? 'text-gray-500' : 'text-green-600'} />
-                ) : exam.isPublished ? (
-                  <LockClosedIcon className="h-4 w-4" />
-                ) : (
-                  <CheckBadgeIcon className="h-4 w-4" />
-                )}
-                {exam.isPublished ? 'Unpublish' : 'Publish'}
+                <ClipboardDocumentListIcon className="h-4 w-4" /> Enter Results
               </button>
-              <button
-                onClick={() => navigate(ROUTES.EXAMINATION_EDIT.replace(':id', String(exam.examinationId)))}
-                className="flex items-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                <PencilSquareIcon className="h-4 w-4" />
-                Edit
-              </button>
-              <button
-                onClick={() => setShowDeleteMod(true)}
-                className="flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-100"
-              >
-                <TrashIcon className="h-4 w-4" />
-                Delete
-              </button>
-            </>
-          )}
+            )}
+            {isAdmin && (
+              <>
+                <button
+                  onClick={handlePublishToggle}
+                  disabled={publishing}
+                  className="flex items-center gap-1.5 px-3 py-2 bg-white/20 hover:bg-white/30 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50"
+                >
+                  {publishing
+                    ? <Spinner size="sm" className="text-white" />
+                    : exam.isPublished
+                      ? <LockClosedIcon className="h-4 w-4" />
+                      : <CheckBadgeIcon className="h-4 w-4" />}
+                  {exam.isPublished ? 'Unpublish' : 'Publish'}
+                </button>
+                <button
+                  onClick={() => navigate(ROUTES.EXAMINATION_EDIT.replace(':id', String(exam.examinationId)))}
+                  className="flex items-center gap-1.5 px-3 py-2 bg-white/20 hover:bg-white/30 text-white text-sm font-medium rounded-xl transition-colors"
+                >
+                  <PencilSquareIcon className="h-4 w-4" /> Edit
+                </button>
+                <button
+                  onClick={() => setShowDeleteMod(true)}
+                  className="flex items-center gap-1.5 px-3 py-2 bg-red-500/80 hover:bg-red-600 text-white text-sm font-medium rounded-xl transition-colors"
+                >
+                  <TrashIcon className="h-4 w-4" /> Delete
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        {/* ── Exam Info ── */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
-            <CalendarDaysIcon className="h-4 w-4 text-gray-400" />
-            <h3 className="text-sm font-semibold text-gray-700">Examination Details</h3>
-          </div>
-          <InfoRow label="Class"         value={exam.className} />
-          <InfoRow label="Academic Year"  value={exam.academicYear} />
+      {/* ── Cards grid ────────────────────────────────────────────────────── */}
+      <div className="px-8 -mt-10 pb-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        {/* Examination Details */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
+            <AcademicCapIcon className="h-4 w-4 text-indigo-500" /> Examination Details
+          </h3>
+          <InfoRow icon={<AcademicCapIcon  className="h-4 w-4" />} label="Class"         value={exam.className} />
+          <InfoRow icon={<CalendarDaysIcon className="h-4 w-4" />} label="Academic Year"  value={exam.academicYear} />
           <InfoRow
+            icon={<CalendarDaysIcon className="h-4 w-4" />}
             label="Schedule"
             value={`${new Date(exam.startDate).toLocaleDateString()} – ${new Date(exam.endDate).toLocaleDateString()}`}
           />
-          <InfoRow label="Max Marks"  value={exam.maxMarks} />
-          <InfoRow label="Pass Marks" value={exam.passMarks} />
+          <InfoRow icon={<StarIcon         className="h-4 w-4" />} label="Max Marks"  value={String(exam.maxMarks)} />
+          <InfoRow icon={<CheckCircleIcon  className="h-4 w-4" />} label="Pass Marks" value={String(exam.passMarks)} />
           {exam.createdAt && (
-            <InfoRow label="Created" value={new Date(exam.createdAt).toLocaleDateString()} />
+            <InfoRow icon={<ClockIcon className="h-4 w-4" />} label="Created" value={new Date(exam.createdAt).toLocaleDateString()} />
           )}
         </div>
 
-        {/* ── Results Summary ── */}
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
-            <UserGroupIcon className="h-4 w-4 text-gray-400" />
-            <h3 className="text-sm font-semibold text-gray-700">Results Summary</h3>
-          </div>
+        {/* Results Summary */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
+            <UserGroupIcon className="h-4 w-4 text-blue-500" /> Results Summary
+          </h3>
           {results.length === 0 ? (
             <div className="text-center py-6 text-sm text-gray-400">No results entered yet.</div>
           ) : (
             <>
               <div className="grid grid-cols-3 gap-3 mb-4">
-                <div className="text-center rounded-lg bg-gray-50 p-3">
+                <div className="text-center rounded-xl bg-gray-50 p-3">
                   <div className="text-xl font-bold text-gray-700">{results.length}</div>
                   <div className="text-xs text-gray-500 mt-0.5">Total</div>
                 </div>
-                <div className="text-center rounded-lg bg-green-50 p-3">
-                  <div className="text-xl font-bold text-green-600">{passCount}</div>
-                  <div className="text-xs text-green-600 mt-0.5">Passed</div>
+                <div className="text-center rounded-xl bg-emerald-50 p-3">
+                  <div className="text-xl font-bold text-emerald-600">{passCount}</div>
+                  <div className="text-xs text-emerald-600 mt-0.5">Passed</div>
                 </div>
-                <div className="text-center rounded-lg bg-red-50 p-3">
+                <div className="text-center rounded-xl bg-red-50 p-3">
                   <div className="text-xl font-bold text-red-500">{failCount}</div>
                   <div className="text-xs text-red-500 mt-0.5">Failed</div>
                 </div>
               </div>
-              {/* Top results preview */}
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
@@ -267,7 +261,7 @@ export default function ExaminationDetailPage() {
                   <tbody>
                     {results.slice(0, 8).map(r => (
                       <tr key={r.resultId} className="border-b border-gray-50">
-                        <td className="py-1.5 text-gray-700 text-xs">{r.studentName}</td>
+                        <td className="py-1.5 text-gray-700">{r.studentName}</td>
                         <td className="py-1.5 text-center text-gray-600">{r.subjectCode}</td>
                         <td className="py-1.5 text-center text-gray-700">{r.marksObtained}/{r.maxMarks}</td>
                         <td className="py-1.5 text-center">{r.grade ? <Grade grade={r.grade} /> : '—'}</td>
@@ -284,36 +278,42 @@ export default function ExaminationDetailPage() {
             </>
           )}
         </div>
+
       </div>
 
-      {/* ── Delete confirmation modal ── */}
+      {/* ── Publish success toast ──────────────────────────────────────────── */}
+      {publishOk && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white text-sm font-medium px-4 py-3 rounded-xl shadow-xl">
+          <CheckBadgeIcon className="h-5 w-5" />
+          {exam.isPublished ? 'Examination published.' : 'Examination unpublished.'}
+        </div>
+      )}
+
+      {/* ── Delete confirmation modal ───────────────────────────────────────── */}
       {showDeleteMod && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="mx-4 w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
-                <TrashIcon className="h-5 w-5 text-red-600" />
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900">Delete Examination?</p>
-                <p className="text-xs text-gray-500">{exam.examName}</p>
+          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm mx-4">
+            <div className="flex items-center justify-center mb-4">
+              <div className="h-14 w-14 rounded-full bg-red-100 flex items-center justify-center">
+                <TrashIcon className="h-7 w-7 text-red-600" />
               </div>
             </div>
-            <p className="text-sm text-gray-600 mb-5">
-              This examination and all associated results will be permanently removed.
+            <h2 className="text-lg font-bold text-gray-900 text-center">Delete Examination</h2>
+            <p className="text-sm text-gray-500 text-center mt-2">
+              This examination and all associated results will be permanently removed. This action cannot be undone.
             </p>
-            <div className="flex justify-end gap-2">
+            <div className="flex gap-3 mt-6">
               <button
                 onClick={() => setShowDeleteMod(false)}
                 disabled={deleting}
-                className="rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 text-sm font-semibold border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
                 disabled={deleting}
-                className="flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 text-sm font-semibold bg-red-600 hover:bg-red-700 text-white rounded-xl transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
               >
                 {deleting ? <><Spinner size="sm" className="text-white" /> Deleting…</> : 'Delete'}
               </button>

@@ -376,4 +376,22 @@ export default function ExaminationListPage() {
             <div className="flex gap-3 mt-6">
               <button
                 onClick={() => { setDeleteId(null); setDeleteErr(null); }}
-                disab
+                disabled={deleting}
+                className="flex-1 px-4 py-2.5 text-sm font-semibold border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                disabled={deleting}
+                className="flex-1 px-4 py-2.5 text-sm font-semibold bg-red-600 hover:bg-red-700 text-white rounded-xl transition-colors disabled:opacity-60"
+              >
+                {deleting ? 'Deleting…' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

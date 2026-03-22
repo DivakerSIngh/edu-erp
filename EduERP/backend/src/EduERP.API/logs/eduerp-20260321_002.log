@@ -353,3 +353,57 @@ EduERP.Domain.Exceptions.UnauthorizedException: Refresh token is invalid or expi
 [2026-03-21 10:59:46.084 -07:00 INF] GET /api/v1/examinations 200 in 24ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK7DJ3UELFU:00000005","RequestPath":"/api/v1/examinations","ConnectionId":"0HNK7DJ3UELFU","MachineName":"DIVAKER","ThreadId":78,"Application":"EduERP"}
 [2026-03-21 10:59:46.087 -07:00 INF] HTTP GET /api/v1/examinations responded 200 in 1.6068 ms {"SourceContext":"Serilog.AspNetCore.RequestLoggingMiddleware","ActionId":"e7129c3a-60c9-4223-9aa8-a0d90df0d3c6","ActionName":"EduERP.API.Controllers.v1.ExaminationController.GetAll (EduERP.API)","RequestId":"0HNK7DJ3UELG0:00000002","ConnectionId":"0HNK7DJ3UELG0","MachineName":"DIVAKER","ThreadId":81,"Application":"EduERP"}
 [2026-03-21 10:59:46.088 -07:00 INF] GET /api/v1/examinations 200 in 2ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK7DJ3UELG0:00000002","RequestPath":"/api/v1/examinations","ConnectionId":"0HNK7DJ3UELG0","MachineName":"DIVAKER","ThreadId":81,"Application":"EduERP"}
+[2026-03-21 22:29:46.217 -07:00 INF] Seed: Admin user already exists — skipping. {"SourceContext":"EduERP.Infrastructure.Data.DatabaseSeeder","MachineName":"DIVAKER","ThreadId":9,"Application":"EduERP"}
+[2026-03-21 22:30:05.110 -07:00 FTL] Application failed to start. {"MachineName":"DIVAKER","ThreadId":9,"Application":"EduERP"}
+StackExchange.Redis.RedisConnectionException: The message timed out in the backlog attempting to send because no connection became available (5000ms) - Last Connection Exception: It was not possible to connect to the redis server(s). ConnectTimeout, command=SUBSCRIBE, timeout: 5000, inst: 0, qu: 0, qs: 0, aw: False, bw: SpinningDown, rs: NotStarted, ws: Idle, in: 0, last-in: 0, cur-in: 0, sync-ops: 1, async-ops: 0, serverEndpoint: localhost:6379, conn-sec: n/a, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: DIVAKER(SE.Redis-v2.8.16.12844), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=16,Max=32767), POOL: (Threads=7,QueuedItems=0,CompletedItems=55,Timers=7), v: 2.8.16.12844 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+ ---> StackExchange.Redis.RedisConnectionException: It was not possible to connect to the redis server(s). ConnectTimeout
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2099
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisSubscriber.EnsureSubscribedToServer(Subscription sub, RedisChannel channel, CommandFlags flags, Boolean internalCall) in /_/src/StackExchange.Redis/RedisSubscriber.cs:line 412
+   at StackExchange.Redis.RedisSubscriber.Subscribe(RedisChannel channel, Action`2 handler, ChannelMessageQueue queue, CommandFlags flags) in /_/src/StackExchange.Redis/RedisSubscriber.cs:line 401
+   at StackExchange.Redis.RedisSubscriber.StackExchange.Redis.ISubscriber.Subscribe(RedisChannel channel, Action`2 handler, CommandFlags flags) in /_/src/StackExchange.Redis/RedisSubscriber.cs:line 385
+   at Hangfire.Redis.StackExchange.RedisSubscription..ctor(RedisStorage storage, ISubscriber subscriber)
+   at Hangfire.Redis.StackExchange.RedisStorage..ctor(String connectionString, RedisStorageOptions options)
+   at Hangfire.Redis.StackExchange.RedisStorageExtensions.UseRedisStorage(IGlobalConfiguration configuration, String nameOrConnectionString, RedisStorageOptions options)
+   at Program.<>c__DisplayClass0_0.<<Main>$>b__2(IGlobalConfiguration config) in D:\University\EduERP\backend\src\EduERP.API\Program.cs:line 52
+   at Hangfire.HangfireServiceCollectionExtensions.<>c__DisplayClass0_0.<AddHangfire>b__0(IServiceProvider provider, IGlobalConfiguration config) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 40
+   at Hangfire.HangfireServiceCollectionExtensions.<>c__DisplayClass1_0.<AddHangfire>b__14(IServiceProvider serviceProvider) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 103
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.CreateServiceAccessor(ServiceIdentifier serviceIdentifier)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetService[T](IServiceProvider provider)
+   at Hangfire.HangfireServiceCollectionExtensions.ThrowIfNotConfigured(IServiceProvider serviceProvider) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 307
+   at Hangfire.HangfireApplicationBuilderExtensions.UseHangfireDashboard(IApplicationBuilder app, String pathMatch, DashboardOptions options, JobStorage storage) in C:\projects\hangfire-525\src\Hangfire.AspNetCore\HangfireApplicationBuilderExtensions.cs:line 44
+   at Program.<Main>$(String[] args) in D:\University\EduERP\backend\src\EduERP.API\Program.cs:line 97
+[2026-03-21 22:41:46.666 -07:00 INF] Seed: Admin user already exists — skipping. {"SourceContext":"EduERP.Infrastructure.Data.DatabaseSeeder","MachineName":"DIVAKER","ThreadId":9,"Application":"EduERP"}
+[2026-03-21 22:41:59.969 -07:00 FTL] Application failed to start. {"MachineName":"DIVAKER","ThreadId":9,"Application":"EduERP"}
+StackExchange.Redis.RedisConnectionException: The message timed out in the backlog attempting to send because no connection became available (5000ms) - Last Connection Exception: It was not possible to connect to the redis server(s). ConnectTimeout, command=SUBSCRIBE, timeout: 5000, inst: 0, qu: 0, qs: 0, aw: False, bw: SpinningDown, rs: NotStarted, ws: Idle, in: 0, last-in: 0, cur-in: 0, sync-ops: 1, async-ops: 0, serverEndpoint: localhost:6379, conn-sec: n/a, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: DIVAKER(SE.Redis-v2.8.16.12844), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=1,Free=32766,Min=16,Max=32767), POOL: (Threads=7,QueuedItems=0,CompletedItems=55,Timers=7), v: 2.8.16.12844 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+ ---> StackExchange.Redis.RedisConnectionException: It was not possible to connect to the redis server(s). ConnectTimeout
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2099
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisSubscriber.EnsureSubscribedToServer(Subscription sub, RedisChannel channel, CommandFlags flags, Boolean internalCall) in /_/src/StackExchange.Redis/RedisSubscriber.cs:line 412
+   at StackExchange.Redis.RedisSubscriber.Subscribe(RedisChannel channel, Action`2 handler, ChannelMessageQueue queue, CommandFlags flags) in /_/src/StackExchange.Redis/RedisSubscriber.cs:line 401
+   at StackExchange.Redis.RedisSubscriber.StackExchange.Redis.ISubscriber.Subscribe(RedisChannel channel, Action`2 handler, CommandFlags flags) in /_/src/StackExchange.Redis/RedisSubscriber.cs:line 385
+   at Hangfire.Redis.StackExchange.RedisSubscription..ctor(RedisStorage storage, ISubscriber subscriber)
+   at Hangfire.Redis.StackExchange.RedisStorage..ctor(String connectionString, RedisStorageOptions options)
+   at Hangfire.Redis.StackExchange.RedisStorageExtensions.UseRedisStorage(IGlobalConfiguration configuration, String nameOrConnectionString, RedisStorageOptions options)
+   at Program.<>c__DisplayClass0_0.<<Main>$>b__2(IGlobalConfiguration config) in D:\University\EduERP\backend\src\EduERP.API\Program.cs:line 52
+   at Hangfire.HangfireServiceCollectionExtensions.<>c__DisplayClass0_0.<AddHangfire>b__0(IServiceProvider provider, IGlobalConfiguration config) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 40
+   at Hangfire.HangfireServiceCollectionExtensions.<>c__DisplayClass1_0.<AddHangfire>b__14(IServiceProvider serviceProvider) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 103
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.CreateServiceAccessor(ServiceIdentifier serviceIdentifier)
+   at System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetService[T](IServiceProvider provider)
+   at Hangfire.HangfireServiceCollectionExtensions.ThrowIfNotConfigured(IServiceProvider serviceProvider) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 307
+   at Hangfire.HangfireApplicationBuilderExtensions.UseHangfireDashboard(IApplicationBuilder app, String pathMatch, DashboardOptions options, JobStorage storage) in C:\projects\hangfire-525\src\Hangfire.AspNetCore\HangfireApplicationBuilderExtensions.cs:line 44
+   at Program.<Main>$(String[] args) in D:\University\EduERP\backend\src\EduERP.API\Program.cs:line 97
