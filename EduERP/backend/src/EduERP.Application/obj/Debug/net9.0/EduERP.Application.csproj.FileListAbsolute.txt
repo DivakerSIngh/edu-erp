@@ -1,0 +1,15 @@
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.Application.csproj.AssemblyReference.cache
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.Application.AssemblyInfoInputs.cache
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.Application.AssemblyInfo.cs
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.Application.csproj.CoreCompileInputs.cache
+D:\University\EduERP\backend\src\EduERP.Application\bin\Debug\net9.0\EduERP.Application.deps.json
+D:\University\EduERP\backend\src\EduERP.Application\bin\Debug\net9.0\EduERP.Application.dll
+D:\University\EduERP\backend\src\EduERP.Application\bin\Debug\net9.0\EduERP.Application.pdb
+D:\University\EduERP\backend\src\EduERP.Application\bin\Debug\net9.0\EduERP.Domain.dll
+D:\University\EduERP\backend\src\EduERP.Application\bin\Debug\net9.0\EduERP.Domain.pdb
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.A.E7187D25.Up2Date
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.Application.dll
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\refint\EduERP.Application.dll
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\EduERP.Application.pdb
+D:\University\EduERP\backend\src\EduERP.Application\obj\Debug\net9.0\ref\EduERP.Application.dll

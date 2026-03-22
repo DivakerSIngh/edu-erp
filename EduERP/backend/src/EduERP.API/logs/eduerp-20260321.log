@@ -1,0 +1,86 @@
+[2026-03-21 02:37:51.414 -07:00 FTL] Application failed to start. {"MachineName":"DIVAKER","ThreadId":2,"Application":"EduERP"}
+System.ArgumentNullException: Value cannot be null. (Parameter 'nameOrConnectionString')
+   at Hangfire.Redis.StackExchange.RedisStorageExtensions.UseRedisStorage(IGlobalConfiguration configuration, String nameOrConnectionString, RedisStorageOptions options)
+   at Program.<>c__DisplayClass0_0.<<Main>$>b__2(IGlobalConfiguration config) in D:\University\EduERP\backend\src\EduERP.API\Program.cs:line 52
+   at Hangfire.HangfireServiceCollectionExtensions.<>c__DisplayClass0_0.<AddHangfire>b__0(IServiceProvider provider, IGlobalConfiguration config) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 40
+   at Hangfire.HangfireServiceCollectionExtensions.<>c__DisplayClass1_0.<AddHangfire>b__14(IServiceProvider serviceProvider) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 103
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.CreateServiceAccessor(ServiceIdentifier serviceIdentifier)
+   at System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetService[T](IServiceProvider provider)
+   at Hangfire.HangfireServiceCollectionExtensions.ThrowIfNotConfigured(IServiceProvider serviceProvider) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 307
+   at Hangfire.HangfireApplicationBuilderExtensions.UseHangfireDashboard(IApplicationBuilder app, String pathMatch, DashboardOptions options, JobStorage storage) in C:\projects\hangfire-525\src\Hangfire.AspNetCore\HangfireApplicationBuilderExtensions.cs:line 44
+   at Program.<Main>$(String[] args) in D:\University\EduERP\backend\src\EduERP.API\Program.cs:line 90
+[2026-03-21 02:39:02.255 -07:00 INF] Starting Hangfire Server using job storage: 'redis://localhost:6379,abortConnect=False/0' {"SourceContext":"Hangfire.BackgroundJobServer","MachineName":"DIVAKER","ThreadId":2,"Application":"EduERP"}
+[2026-03-21 02:39:02.292 -07:00 INF] Using the following options for Hangfire Server:
+    Worker count: 4
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15 {"SourceContext":"Hangfire.BackgroundJobServer","MachineName":"DIVAKER","ThreadId":2,"Application":"EduERP"}
+[2026-03-21 02:39:02.375 -07:00 INF] Server divaker:41508:39d2f05a successfully announced in 51.7904 ms {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":26,"Application":"EduERP"}
+[2026-03-21 02:39:02.379 -07:00 INF] Server divaker:41508:39d2f05a is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler... {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":26,"Application":"EduERP"}
+[2026-03-21 02:39:02.385 -07:00 INF] Server divaker:41508:39d2f05a all the dispatchers started {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":26,"Application":"EduERP"}
+[2026-03-21 02:42:08.672 -07:00 WRN] Failed to determine the https port for redirect. {"EventId":{"Id":3,"Name":"FailedToDeterminePort"},"SourceContext":"Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware","RequestId":"0HNK75OFABC74:00000001","RequestPath":"/health/live","ConnectionId":"0HNK75OFABC74","MachineName":"DIVAKER","ThreadId":21,"Application":"EduERP"}
+[2026-03-21 02:42:10.806 -07:00 INF] HTTP GET /health/live responded 200 in 20.1503 ms {"SourceContext":"Serilog.AspNetCore.RequestLoggingMiddleware","RequestId":"0HNK75OFABC74:00000001","ConnectionId":"0HNK75OFABC74","MachineName":"DIVAKER","ThreadId":21,"Application":"EduERP"}
+[2026-03-21 02:42:10.814 -07:00 INF] GET /health/live 200 in 2168ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK75OFABC74:00000001","RequestPath":"/health/live","ConnectionId":"0HNK75OFABC74","MachineName":"DIVAKER","ThreadId":21,"Application":"EduERP"}
+[2026-03-21 02:42:12.544 -07:00 INF] HTTP GET /health/live responded 200 in 0.5373 ms {"SourceContext":"Serilog.AspNetCore.RequestLoggingMiddleware","RequestId":"0HNK75OFABC74:00000002","ConnectionId":"0HNK75OFABC74","MachineName":"DIVAKER","ThreadId":21,"Application":"EduERP"}
+[2026-03-21 02:42:12.545 -07:00 INF] GET /health/live 200 in 3ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK75OFABC74:00000002","RequestPath":"/health/live","ConnectionId":"0HNK75OFABC74","MachineName":"DIVAKER","ThreadId":21,"Application":"EduERP"}
+[2026-03-21 02:42:26.298 -07:00 INF] HTTP GET /health/live responded 200 in 37.5516 ms {"SourceContext":"Serilog.AspNetCore.RequestLoggingMiddleware","RequestId":"0HNK75OFABC75:00000001","ConnectionId":"0HNK75OFABC75","MachineName":"DIVAKER","ThreadId":43,"Application":"EduERP"}
+[2026-03-21 02:42:26.300 -07:00 INF] GET /health/live 200 in 44ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK75OFABC75:00000001","RequestPath":"/health/live","ConnectionId":"0HNK75OFABC75","MachineName":"DIVAKER","ThreadId":43,"Application":"EduERP"}
+[2026-03-21 02:42:26.415 -07:00 INF] HTTP GET /favicon.ico responded 404 in 0.2495 ms {"SourceContext":"Serilog.AspNetCore.RequestLoggingMiddleware","RequestId":"0HNK75OFABC75:00000002","ConnectionId":"0HNK75OFABC75","MachineName":"DIVAKER","ThreadId":3,"Application":"EduERP"}
+[2026-03-21 02:42:26.416 -07:00 INF] GET /favicon.ico 404 in 1ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK75OFABC75:00000002","RequestPath":"/favicon.ico","ConnectionId":"0HNK75OFABC75","MachineName":"DIVAKER","ThreadId":3,"Application":"EduERP"}
+[2026-03-21 02:43:28.559 -07:00 INF] GET /swagger/index.html 200 in 117ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK75OFABC77:00000001","RequestPath":"/swagger/index.html","ConnectionId":"0HNK75OFABC77","MachineName":"DIVAKER","ThreadId":42,"Application":"EduERP"}
+[2026-03-21 02:43:28.607 -07:00 INF] GET /swagger/index.js 200 in 1ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK75OFABC77:00000002","RequestPath":"/swagger/index.js","ConnectionId":"0HNK75OFABC77","MachineName":"DIVAKER","ThreadId":42,"Application":"EduERP"}
+[2026-03-21 02:43:29.045 -07:00 INF] GET /swagger/v1/swagger.json 200 in 269ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK75OFABC77:00000003","RequestPath":"/swagger/v1/swagger.json","ConnectionId":"0HNK75OFABC77","MachineName":"DIVAKER","ThreadId":42,"Application":"EduERP"}
+[2026-03-21 05:53:48.623 -07:00 INF] GET /swagger/index.html 200 in 25ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK75OFABC79:00000001","RequestPath":"/swagger/index.html","ConnectionId":"0HNK75OFABC79","MachineName":"DIVAKER","ThreadId":44,"Application":"EduERP"}
+[2026-03-21 05:53:48.669 -07:00 INF] GET /swagger/index.js 200 in 1ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK75OFABC79:00000002","RequestPath":"/swagger/index.js","ConnectionId":"0HNK75OFABC79","MachineName":"DIVAKER","ThreadId":47,"Application":"EduERP"}
+[2026-03-21 05:53:48.854 -07:00 INF] GET /swagger/v1/swagger.json 200 in 84ms {"SourceContext":"EduERP.API.Middleware.RequestLoggingMiddleware","RequestId":"0HNK75OFABC79:00000003","RequestPath":"/swagger/v1/swagger.json","ConnectionId":"0HNK75OFABC79","MachineName":"DIVAKER","ThreadId":47,"Application":"EduERP"}
+[2026-03-21 06:16:03.907 -07:00 WRN] Stopping the server due to DomainUnload or ProcessExit event... {"SourceContext":"Hangfire.Server.BackgroundProcessingServer","MachineName":"DIVAKER","ThreadId":1,"Application":"EduERP"}
+[2026-03-21 06:16:03.909 -07:00 INF] Server divaker:41508:39d2f05a caught stopping signal... {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":1,"Application":"EduERP"}
+[2026-03-21 06:16:03.913 -07:00 INF] Server divaker:41508:39d2f05a caught stopped signal... {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":1,"Application":"EduERP"}
+[2026-03-21 06:16:03.914 -07:00 WRN] Server divaker:41508:39d2f05a caught shutdown signal... {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":1,"Application":"EduERP"}
+[2026-03-21 06:16:03.919 -07:00 WRN] Server divaker:41508:39d2f05a stopped non-gracefully due to ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler. Outstanding work on those dispatchers could be aborted, and there can be delays in background processing. This server instance will be incorrectly shown as active for a while. To avoid non-graceful shutdowns, investigate what prevents from stopping gracefully and add CancellationToken support for those methods. {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":26,"Application":"EduERP"}
+[2026-03-21 06:16:03.948 -07:00 INF] Server divaker:41508:39d2f05a successfully reported itself as stopped in 17.6841 ms {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":26,"Application":"EduERP"}
+[2026-03-21 06:16:03.949 -07:00 INF] Server divaker:41508:39d2f05a has been stopped in total 35.7739 ms {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":26,"Application":"EduERP"}
+[2026-03-21 06:18:40.142 -07:00 FTL] Application failed to start. {"MachineName":"DIVAKER","ThreadId":2,"Application":"EduERP"}
+StackExchange.Redis.RedisConnectionException: The message timed out in the backlog attempting to send because no connection became available (5000ms) - Last Connection Exception: It was not possible to connect to the redis server(s). ConnectTimeout, command=SUBSCRIBE, timeout: 5000, inst: 0, qu: 0, qs: 0, aw: False, bw: SpinningDown, rs: NotStarted, ws: Idle, in: 0, last-in: 0, cur-in: 0, sync-ops: 1, async-ops: 0, serverEndpoint: localhost:6379, conn-sec: n/a, aoc: 0, mc: 1/1/0, mgr: 10 of 10 available, clientName: DIVAKER(SE.Redis-v2.8.16.12844), IOCP: (Busy=0,Free=1000,Min=1,Max=1000), WORKER: (Busy=0,Free=32767,Min=16,Max=32767), POOL: (Threads=6,QueuedItems=0,CompletedItems=51,Timers=5), v: 2.8.16.12844 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+ ---> StackExchange.Redis.RedisConnectionException: It was not possible to connect to the redis server(s). ConnectTimeout
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2099
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server, T defaultValue) in /_/src/StackExchange.Redis/RedisBase.cs:line 62
+   at StackExchange.Redis.RedisSubscriber.EnsureSubscribedToServer(Subscription sub, RedisChannel channel, CommandFlags flags, Boolean internalCall) in /_/src/StackExchange.Redis/RedisSubscriber.cs:line 412
+   at StackExchange.Redis.RedisSubscriber.Subscribe(RedisChannel channel, Action`2 handler, ChannelMessageQueue queue, CommandFlags flags) in /_/src/StackExchange.Redis/RedisSubscriber.cs:line 401
+   at StackExchange.Redis.RedisSubscriber.StackExchange.Redis.ISubscriber.Subscribe(RedisChannel channel, Action`2 handler, CommandFlags flags) in /_/src/StackExchange.Redis/RedisSubscriber.cs:line 385
+   at Hangfire.Redis.StackExchange.RedisSubscription..ctor(RedisStorage storage, ISubscriber subscriber)
+   at Hangfire.Redis.StackExchange.RedisStorage..ctor(String connectionString, RedisStorageOptions options)
+   at Hangfire.Redis.StackExchange.RedisStorageExtensions.UseRedisStorage(IGlobalConfiguration configuration, String nameOrConnectionString, RedisStorageOptions options)
+   at Program.<>c__DisplayClass0_0.<<Main>$>b__2(IGlobalConfiguration config) in D:\University\EduERP\backend\src\EduERP.API\Program.cs:line 52
+   at Hangfire.HangfireServiceCollectionExtensions.<>c__DisplayClass0_0.<AddHangfire>b__0(IServiceProvider provider, IGlobalConfiguration config) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 40
+   at Hangfire.HangfireServiceCollectionExtensions.<>c__DisplayClass1_0.<AddHangfire>b__14(IServiceProvider serviceProvider) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 103
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.CreateServiceAccessor(ServiceIdentifier serviceIdentifier)
+   at System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetService[T](IServiceProvider provider)
+   at Hangfire.HangfireServiceCollectionExtensions.ThrowIfNotConfigured(IServiceProvider serviceProvider) in C:\projects\hangfire-525\src\Hangfire.NetCore\HangfireServiceCollectionExtensions.cs:line 307
+   at Hangfire.HangfireApplicationBuilderExtensions.UseHangfireDashboard(IApplicationBuilder app, String pathMatch, DashboardOptions options, JobStorage storage) in C:\projects\hangfire-525\src\Hangfire.AspNetCore\HangfireApplicationBuilderExtensions.cs:line 44
+   at Program.<Main>$(String[] args) in D:\University\EduERP\backend\src\EduERP.API\Program.cs:line 90
+[2026-03-21 06:20:30.286 -07:00 INF] Starting Hangfire Server using job storage: 'redis://localhost:6379,abortConnect=False/0' {"SourceContext":"Hangfire.BackgroundJobServer","MachineName":"DIVAKER","ThreadId":2,"Application":"EduERP"}
+[2026-03-21 06:20:30.345 -07:00 INF] Using the following options for Hangfire Server:
+    Worker count: 4
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15 {"SourceContext":"Hangfire.BackgroundJobServer","MachineName":"DIVAKER","ThreadId":2,"Application":"EduERP"}
+[2026-03-21 06:20:30.400 -07:00 INF] Server divaker:24752:6931843e successfully announced in 23.0073 ms {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":26,"Application":"EduERP"}
+[2026-03-21 06:20:30.407 -07:00 INF] Server divaker:24752:6931843e is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler... {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":26,"Application":"EduERP"}
+[2026-03-21 06:20:30.415 -07:00 INF] Server divaker:24752:6931843e all the dispatchers started {"SourceContext":"Hangfire.Server.BackgroundServerProcess","MachineName":"DIVAKER","ThreadId":26,"Application":"EduERP"}
+[2026-03-21 06:20:30.453 -07:00 INF] 1 servers were removed due to timeout {"SourceContext":"Hangfire.Server.ServerWatchdog","MachineName":"DIVAKER","ThreadId":28,"Application":"EduERP"}

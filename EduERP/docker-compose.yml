@@ -1,0 +1,92 @@
+services:
+  # ── SQL Server 2022 (custom image auto-initialises the EduERP database) ─────
+  sqlserver:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: eduerp-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "EduERP@Dev2024!"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      # mssql-tools18 is the correct path in the 2022 image; -C trusts self-signed TLS
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'EduERP@Dev2024!' -Q 'SELECT 1' -C -l 5"]
+      interval: 15s
+      timeout: 10s
+      retries: 12
+      start_period: 30s
+    networks:
+      - eduerp-net
+
+  # ── Redis 7 ─────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: eduerp-redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - eduerp-net
+
+  # ── ASP.NET Core API ─────────────────────────────────────────────────────────
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: eduerp-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=EduERP;User Id=sa;Password=EduERP@Dev2024!;TrustServerCertificate=True;Encrypt=True;"
+      ConnectionStrings__ReadReplicaConnection: ""
+      ConnectionStrings__Redis: "redis:6379,abortConnect=false"
+      Jwt__Issuer: "EduERP"
+      Jwt__Audience: "EduERP-Clients"
+      Jwt__SecretKey: "dev-secret-key-must-be-at-least-64-chars-long-REPLACE-IN-PROD!!"
+      Jwt__BindingSecret: "dev-binding-secret-32-chars-REPLACE"
+      Jwt__AccessTokenExpiryMinutes: "10"
+      Jwt__RefreshTokenExpiryDays: "7"
+      Cors__AllowedOrigins__0: "http://localhost:3000"
+    ports:
+      - "5000:8080"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - eduerp-net
+    restart: on-failure
+
+  # ── React Frontend (Nginx) ───────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: eduerp-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - eduerp-net
+    restart: on-failure
+
+volumes:
+  sqlserver_data:
+  redis_data:
+
+networks:
+  eduerp-net:
+    driver: bridge

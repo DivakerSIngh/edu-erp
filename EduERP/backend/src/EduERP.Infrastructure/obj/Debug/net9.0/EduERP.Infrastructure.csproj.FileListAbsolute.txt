@@ -1,0 +1,17 @@
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.Infrastructure.csproj.AssemblyReference.cache
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.Infrastructure.AssemblyInfoInputs.cache
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.Infrastructure.AssemblyInfo.cs
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.Infrastructure.csproj.CoreCompileInputs.cache
+D:\University\EduERP\backend\src\EduERP.Infrastructure\bin\Debug\net9.0\EduERP.Infrastructure.deps.json
+D:\University\EduERP\backend\src\EduERP.Infrastructure\bin\Debug\net9.0\EduERP.Infrastructure.dll
+D:\University\EduERP\backend\src\EduERP.Infrastructure\bin\Debug\net9.0\EduERP.Infrastructure.pdb
+D:\University\EduERP\backend\src\EduERP.Infrastructure\bin\Debug\net9.0\EduERP.Application.dll
+D:\University\EduERP\backend\src\EduERP.Infrastructure\bin\Debug\net9.0\EduERP.Domain.dll
+D:\University\EduERP\backend\src\EduERP.Infrastructure\bin\Debug\net9.0\EduERP.Application.pdb
+D:\University\EduERP\backend\src\EduERP.Infrastructure\bin\Debug\net9.0\EduERP.Domain.pdb
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.I.02A9D423.Up2Date
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.Infrastructure.dll
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\refint\EduERP.Infrastructure.dll
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\EduERP.Infrastructure.pdb
+D:\University\EduERP\backend\src\EduERP.Infrastructure\obj\Debug\net9.0\ref\EduERP.Infrastructure.dll

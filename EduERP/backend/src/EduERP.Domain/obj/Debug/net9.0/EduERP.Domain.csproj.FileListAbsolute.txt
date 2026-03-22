@@ -1,0 +1,11 @@
+D:\University\EduERP\backend\src\EduERP.Domain\bin\Debug\net9.0\EduERP.Domain.deps.json
+D:\University\EduERP\backend\src\EduERP.Domain\bin\Debug\net9.0\EduERP.Domain.dll
+D:\University\EduERP\backend\src\EduERP.Domain\bin\Debug\net9.0\EduERP.Domain.pdb
+D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\EduERP.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\EduERP.Domain.AssemblyInfoInputs.cache
+D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\EduERP.Domain.AssemblyInfo.cs
+D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\EduERP.Domain.csproj.CoreCompileInputs.cache
+D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\EduERP.Domain.dll
+D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\refint\EduERP.Domain.dll
+D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\EduERP.Domain.pdb
+D:\University\EduERP\backend\src\EduERP.Domain\obj\Debug\net9.0\ref\EduERP.Domain.dll
